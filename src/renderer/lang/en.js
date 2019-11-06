@@ -12,6 +12,10 @@ export default {
 			label: 'window title',
 			placeholder: 'The default is the device model',
 		},
+		pushTarget: {
+			label: 'push target',
+			placeholder: 'The default is /sdcard/'
+		},
 		record: {
 			label: 'record screen',
 			tip: 'When turned on, the mirror will be recorded; when closed, the recorded video file will be generated to the specified path.',

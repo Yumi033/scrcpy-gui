@@ -12,6 +12,10 @@ export default {
 			label: '窗口标题',
 			placeholder: '默认为手机型号'
 		},
+		pushTarget: {
+			label: '传输文件保存路径',
+			placeholder: '默认为/sdcard/'
+		},
 		record: {
 			label: '镜像录屏',
 			tip: '开启后,将录制镜像;关闭后,将生成已录制的视频文件到指定路径',

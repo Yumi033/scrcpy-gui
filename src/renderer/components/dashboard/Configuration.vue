@@ -10,6 +10,15 @@
 				></el-input>
 			</el-form-item>
 
+			<el-form-item :label="$t('configuration.pushTarget.label')">
+				<el-input
+					v-model="config.pushTarget"
+					prefix-icon="el-icon-location-information"
+					:placeholder="$t('configuration.pushTarget.placeholder')"
+					clearable
+				></el-input>
+			</el-form-item>
+
 			<el-form-item :label="$t('configuration.record.label')">
 				<el-switch
 					@change="tip($t('configuration.record.tip'), config.record.open === true)"
@@ -105,7 +114,7 @@ export default {
 		return {
 			config: {
 				title: '',
-
+				pushTarget: '/sdcard/Documents/',
 				record: {
 					open: false,
 					openMirror: true,
@@ -148,7 +157,7 @@ export default {
 		setDefault() {
 			this.config = {
 				title: '',
-
+				pushTarget: '/sdcard/Documents/',
 				record: {
 					open: false,
 					openMirror: true,

@@ -4,13 +4,18 @@ fixPath()
 const open = ({ sender }, options) => {
 	const args = []
 	const { config, devices } = options
-	const { title, record, screen, fixed, control, touch, render, bitRate, maxSize, crop } = config
+	const { title, pushTarget, record, screen, fixed, control, touch, render, bitRate, maxSize, crop } = config
 	const { open, openMirror, filepath } = record
 	const { x, y, height, width } = crop
 
 	if (title !== '') {
 		args.push('--window-title')
 		args.push(title)
+	}
+
+	if (pushTarget !== '') {
+		args.push('--push-target')
+		args.push(pushTarget)
 	}
 
 	if (open) {
