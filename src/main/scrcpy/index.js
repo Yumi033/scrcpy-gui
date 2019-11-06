@@ -1,6 +1,7 @@
 const debug = require('debug')('scrcpy')
 const fixPath = require('fix-path')
 fixPath()
+const scrcpys = new Map()
 const open = ({ sender }, options) => {
 	const args = []
 	const { config, devices } = options
@@ -56,6 +57,7 @@ const open = ({ sender }, options) => {
 	devices.forEach(({ id }) => {
 		const { spawn } = require('child_process')
 		const scrcpy = spawn('scrcpy', [...args, '-s', `${id}`])
+		scrcpys.set(scrcpy.pid, scrcpy)
 		let opened = false
 		let exited = false
 		scrcpy.stdout.on('data', (data) => {
@@ -66,25 +68,37 @@ const open = ({ sender }, options) => {
 			console.log(`stdout: ${data}`)
 		})
 		scrcpy.on('error', (code) => {
-			console.log(`child process close all stdio with code ${code}`)
+			console.log(`on error: child process close all stdio with code ${code}`)
 			scrcpy.kill()
+			scrcpys.delete(scrcpy.pid)
 		})
 
 		scrcpy.on('close', (code) => {
-			console.log(`child process close all stdio with code ${code}`)
+			console.log(`on close: child process close all stdio with code ${code}`)
 		})
 
 		scrcpy.on('exit', (code) => {
-			console.log(`child process exited with code ${code}`)
+			console.log(`on exit: child process exited with code ${code}`)
 			if (!exited) {
 				sender.send('close', { success: code === 0, id })
+				console.log('scrcpy close')
 				scrcpy.kill()
+				scrcpys.delete(scrcpy.pid)
 				exited = true
 			}
 		})
 	})
 }
 
+const close = () => {
+	scrcpys.forEach((scrcpy, key, maps) => {
+		console.log('scrcpy close')
+		scrcpy.kill()
+		maps.delete(key)
+	})
+}
+
 export default {
-	open
+	open,
+	close
 }

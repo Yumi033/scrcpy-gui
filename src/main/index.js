@@ -43,6 +43,7 @@ function createWindow() {
 		mainWindow.show()
 	})
 	mainWindow.on('close', () => {
+		console.log('window close')
 		ipcMain.removeAllListeners('open')
 		ipcMain.removeAllListeners('connect')
 		ipcMain.removeAllListeners('disconnect')
@@ -50,6 +51,8 @@ function createWindow() {
 
 	mainWindow.on('closed', () => {
 		mainWindow = null
+		console.log('window closed')
+		scrcpy.close()
 	})
 
 	mainWindow.webContents.on('did-finish-load', function () {
@@ -65,7 +68,9 @@ app.on('ready', createWindow)
 
 app.on('window-all-closed', () => {
 	if (process.platform !== 'darwin') {
+		console.log('window all closed')
 		app.quit()
+		scrcpy.close()
 	}
 })
 
